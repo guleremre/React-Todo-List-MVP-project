@@ -13,15 +13,32 @@ function Profile() {
   var [todo, setTodo] = useState("");
   var [todos, setTodos] = useState([]);
 
-  function getMyTodo(userId) {
-    axios //then we will get users todos
-      .get("http://localhost:3000/todo/" + userId)
-      .then(({ data }) => {
-        console.log("user Todos", data);
-        setTodos(data);
-      });
-  }
+  // function localToken() {
+  //   if (localStorage.getItem("token")) {
+  //     //only user has token on local storage he can see the page
+  //     axios
+  //       .post(url, { token: localStorage.getItem("token") }) //we are taking token which saved to local storage
+  //       .then(({ data }) => {
+  //         if (data._id) {
+  //           // even if user has token but it is not related to its id send to "/"
+  //           setUser(data);
+  //           getMyTodo(data._id); //after create we call func to here
+  //         } else {
+  //           navigate("/");
+  //         }
+  //       });
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }
 
+  function getMyTodo() {
+    //then we will get users todos
+    axios.get("http://localhost:3000/todo/" + user._id).then(({ data }) => {
+      console.log("user Todos", data);
+      setTodos(data);
+    });
+  }
   useEffect(() => {
     if (localStorage.getItem("token")) {
       //only user has token on local storage he can see the page
@@ -40,10 +57,12 @@ function Profile() {
       navigate("/");
     }
   }, []);
+
   function create() {
     axios
       .post("http://localhost:3000/todo/", { title: todo, userId: user._id })
       .then((data) => {
+        setTodo(""); //clears the input area
         getMyTodo(user._id); //after we need to refresh the page to
       });
   }
@@ -66,9 +85,11 @@ function Profile() {
       >
         Add Todo
       </button>
-      {todos.map((e) => {
-        return <li>{e.title} </li>;
-      })}
+      <ul>
+        {todos.map((e) => {
+          return <li key={e._id}>{e.title}</li>;
+        })}
+      </ul>
     </div>
   );
 }
