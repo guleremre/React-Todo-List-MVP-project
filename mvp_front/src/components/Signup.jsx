@@ -22,7 +22,7 @@ function Signup() {
           //after login token returns
           localStorage.setItem("token", data.token);
           //if token returns navigate to profile
-          navigate("/profile");
+          navigate("/profile");//********navitaging to page */
         } else {
           alert(data.msg);
         }
