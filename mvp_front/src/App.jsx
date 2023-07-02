@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Login from "./components/Login";
-import Signup from "./components/signup";
+import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 
 function App() {
@@ -9,16 +9,15 @@ function App() {
       <Router>
         <div>
           <Routes>
-            <Route path="/" element={Login}></Route>
-            <Route path="/" element={Signup}></Route>
-            <Route path="/" element={Profile}></Route>
+            <Route path="/" element={<Login />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
           </Routes>
         </div>
       </Router>
     </div>
   );
 }
-
 export default App;
 
 // import { useState } from "react";
