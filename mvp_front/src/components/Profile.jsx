@@ -13,32 +13,13 @@ function Profile() {
   var [todo, setTodo] = useState("");
   var [todos, setTodos] = useState([]);
 
-  // function localToken() {
-  //   if (localStorage.getItem("token")) {
-  //     //only user has token on local storage he can see the page
-  //     axios
-  //       .post(url, { token: localStorage.getItem("token") }) //we are taking token which saved to local storage
-  //       .then(({ data }) => {
-  //         if (data._id) {
-  //           // even if user has token but it is not related to its id send to "/"
-  //           setUser(data);
-  //           getMyTodo(data._id); //after create we call func to here
-  //         } else {
-  //           navigate("/");
-  //         }
-  //       });
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }
-
-  function getMyTodo() {
+  function getMyTodos(userId) {
     //then we will get users todos
-    axios.get("http://localhost:3000/todo/" + user._id).then(({ data }) => {
-      console.log("user Todos", data);
+    axios.get("http://localhost:3000/todo/" + userId).then(({ data }) => {
       setTodos(data);
     });
   }
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       //only user has token on local storage he can see the page
@@ -48,7 +29,7 @@ function Profile() {
           if (data._id) {
             // even if user has token but it is not related to its id send to "/"
             setUser(data);
-            getMyTodo(data._id); //after create we call func to here
+            getMyTodos(data._id); //after create we call func to here
           } else {
             navigate("/");
           }
@@ -60,22 +41,25 @@ function Profile() {
 
   function create() {
     axios
-      .post("http://localhost:3000/todo/", { title: todo, userId: user._id })
+      .post("http://localhost:3000/todo/", { todo: todo, userId: user._id })
       .then((data) => {
+        console.log({ data });
+        getMyTodos(user._id); //after we need to refresh the page to
         setTodo(""); //clears the input area
-        getMyTodo(user._id); //after we need to refresh the page to
       });
   }
 
   return (
     <div>
-      <h1>This is profile of {user.email} </h1>
+      <h3>
+        This is profile of <br /> {user.email}{" "}
+      </h3>
 
       <input
-        type="email"
-        placeholder="todo"
+        type="text"
+        placeholder=" todo"
         onChange={(e) => {
-          setTodo(e.target.value); //when we click we meed to usestate to save and render
+          setTodo(e.target.value); //when we click we need to usestate to save and render
         }}
       />
       <button
@@ -87,7 +71,7 @@ function Profile() {
       </button>
       <ul>
         {todos.map((e) => {
-          return <li key={e._id}>{e.title}</li>;
+          return <li key={e._id}>{e.todo}</li>;
         })}
       </ul>
     </div>

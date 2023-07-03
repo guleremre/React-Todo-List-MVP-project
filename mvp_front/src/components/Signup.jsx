@@ -20,9 +20,9 @@ function Signup() {
       .then(({ data }) => {
         if (data.token) {
           //after login token returns
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("token", data.token);//we are saving token to local storage
           //if token returns navigate to profile
-          navigate("/profile");//********navitaging to page */
+          navigate("/profile"); //******navitaging to page */
         } else {
           alert(data.msg);
         }

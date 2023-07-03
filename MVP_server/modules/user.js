@@ -3,7 +3,9 @@ const connection = require("./connection");
 
 const schema = new mongoose.Schema(
   {
-    email: String,
+    email: {
+      type: String,
+    },
     password: String,
   },
   { timestamps: true }
