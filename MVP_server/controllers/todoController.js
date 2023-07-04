@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const Todos = require("../modules/todo");
 const Todo = require("../modules/todo");
-
+//GET ALL TODOS
 const getAllTodo = async (req, res) => {
   try {
     const todos = await Todo.find({});
@@ -10,7 +9,7 @@ const getAllTodo = async (req, res) => {
     console.log(err);
   }
 };
-
+//CREATE NEW TODO
 const postOneTodo = async (req, res) => {
   try {
     const newTodo = await Todo.create(req.body);
@@ -19,7 +18,7 @@ const postOneTodo = async (req, res) => {
     res.send(err);
   }
 };
-
+//DELETE A TODO
 const deleteTodo = async (req, res) => {
   try {
     const deleteOneTodo = await Todo.deleteOne({ _id: req.params.id });
@@ -28,8 +27,7 @@ const deleteTodo = async (req, res) => {
     res.send(err);
   }
 };
-
-
+//UPDATE A TODO
 const updateTodo = async (req, res) => {
   try {
     const updateTodo = await Todo.findByIdAndUpdate(
@@ -41,6 +39,7 @@ const updateTodo = async (req, res) => {
     res.send(err);
   }
 };
+//GET ALL TODOS OF ONE USER
 const getAllUserTodo = async (req, res) => {
   try {
     const todos = await Todo.find({ userId: req.params.userId });

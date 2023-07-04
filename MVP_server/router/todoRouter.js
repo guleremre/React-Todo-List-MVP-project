@@ -19,5 +19,4 @@ module.exports = router; // bunun ismini değişme özel bu
 // // router.delete("/:id", imgController.deleteImg);
 // // router.put("/:id", imgController.updateImg);
 // // router.get("/:userId", imgController.getAllUserImg);
-
 // module.exports = router; // bunun ismini değişme özel bu

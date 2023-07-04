@@ -13,6 +13,11 @@ function Profile() {
   var [todo, setTodo] = useState("");
   var [todos, setTodos] = useState([]);
 
+  function disconnect() {
+    localStorage.removeItem("token"); //it just delete token and navigate to "/"
+    navigate("/");
+  }
+
   function getMyTodos(userId) {
     //then we will get users todos
     axios.get("http://localhost:3000/todo/" + userId).then(({ data }) => {
@@ -20,7 +25,7 @@ function Profile() {
     });
   }
 
-  useEffect(() => {
+  function getLocalToken() {
     if (localStorage.getItem("token")) {
       //only user has token on local storage he can see the page
       axios
@@ -37,32 +42,63 @@ function Profile() {
     } else {
       navigate("/");
     }
-  }, []);
-
+  }
+  //CREATE A TODO
   function create() {
     axios
       .post("http://localhost:3000/todo/", { todo: todo, userId: user._id })
       .then((data) => {
         console.log({ data });
         getMyTodos(user._id); //after we need to refresh the page to
-        setTodo(""); //clears the input area
+        setTodo(" "); //clears the input area but nor working right now :D
       });
   }
 
+  //DELETE THE TODO
+  function del(id) {
+    axios.delete("http://localhost:3000/todo/" + id).then(({ data }) => {
+      console.log(data);
+    });
+    // const newList = todos.filter((items) => items._id !== id);
+    // setTodos(newList);
+    getMyTodos();
+  }
+  //UPDATE THE TODO
+  function update(id) {
+    axios
+      .put("http://localhost:3000/todo/" + id, { todo: todo })
+      .then(({ data }) => {
+        getMyTodos();
+      });
+  }
+  //TO START WHEN PAGE LOAD
+  useEffect(() => {
+    getLocalToken();
+    getMyTodos();
+  }, []);
+
   return (
     <div>
+      <button /* Disconnect button*/
+        onClick={() => {
+          disconnect();
+        }}
+      >
+        disconnect
+      </button>
       <h3>
-        This is profile of <br /> {user.email}{" "}
+        This is profile of <br /> {user.email}
       </h3>
 
       <input
         type="text"
         placeholder=" todo"
         onChange={(e) => {
-          setTodo(e.target.value); //when we click we need to usestate to save and render
+          setTodo(e.target.value); //when we click we need to use state to save and render
         }}
       />
-      <button
+
+      <button /* Add button*/
         onClick={() => {
           create();
         }}
@@ -71,7 +107,27 @@ function Profile() {
       </button>
       <ul>
         {todos.map((e) => {
-          return <li key={e._id}>{e.todo}</li>;
+          return (
+            <li key={e._id}>
+              <div>
+                {e.todo}
+                <button /* Delete button*/
+                  onClick={() => {
+                    del(e._id);
+                  }}
+                >
+                  Delete
+                </button>
+                <button /* Update button*/
+                  onClick={() => {
+                    update(e._id);
+                  }}
+                >
+                  Update
+                </button>
+              </div>
+            </li>
+          );
         })}
       </ul>
     </div>
