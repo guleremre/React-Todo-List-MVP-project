@@ -1,0 +1,30 @@
+serverde user ve todo  var
+
+
+user 
+router.post("/signup", userController.signup);
+router.post("/login", userController.login);
+router.post("/verify", userController.verify);
+
+todo da 
+
+router.get("/", todoController.getAllTodo);
+router.post("/", todoController.postOneTodo);
+router.delete("/:id", todoController.deleteTodo);
+router.put("/:id", todoController.updateTodo);
+router.get("/:userId", todoController.getAllUserTodo);
+
+bir de profile  var
+
+
+
+
+FRONT end de
+
+
+signup login
+
+token 
+local starage token
+
+her bir user için bireysel todo list var
